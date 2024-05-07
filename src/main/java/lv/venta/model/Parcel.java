@@ -41,15 +41,15 @@ public class Parcel {
     @Column(name = "Size")
     private Size size;
 
-    @NotNull
+
     @ManyToOne
     @JoinColumn(name="Idc")
     private AbstractCustomer abstractCustomer;
 
-     @NotNull
      @ManyToOne
      @JoinColumn(name="Idp_driver")
      private Driver driver;
+
     public Parcel(boolean isFragile, float price, Size size, AbstractCustomer customer, Driver driver){
         setFragile(isFragile);
         setOrderCreated(LocalDateTime.now());

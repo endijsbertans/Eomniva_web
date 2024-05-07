@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
+import java.util.Collection;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,6 +15,15 @@ import lombok.*;
 @Entity
 public class Driver extends Person{
 
+    @OneToMany(mappedBy = "driver")
+    private Collection<Parcel> parcels;
+
+    @PreRemove
+    private void preRemove() {
+        for (Parcel parcel : parcels) {
+            parcel.setDriver(null);
+        }
+    }
 
     @NotNull
     @Column(name = "Experience_in_years")

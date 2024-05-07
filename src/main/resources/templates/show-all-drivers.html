@@ -1,7 +1,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <body>
-<p th:text = "${mytitle}"></p>
+<nav>
+    <ul>
+        <li><a th:href="@{/driver/show/all}">Show All Drivers</a></li>
+        <li><a th:href="@{/driver/show/all/{id}(id=${id})}">Show Driver by ID</a></li>
+
+        <form th:action="@{'/driver/show'}" method="GET">
+            <input name="id" placeholder="Search by id">
+            <button type="submit">Search</button>
+        </form>
+    </ul>
+</nav>
+<h2 th:text = "${mytitle}"></h2>
 <table>
     <tr th:each="tempPr: ${myobjs}">
         <td th:text = "${tempPr.getName()}"></td>
@@ -9,9 +20,16 @@
         <td th:text = "${tempPr.getPersonCode()}"></td>
         <td th:text = "${tempPr.getLicenseNo()}"></td>
         <td th:text = "${tempPr.getExperienceInYears()}"></td>
-
+        <td>
+            <a th:href="@{'/driver/update/' + ${tempPr.idp}}" target="_self">Atjaunot</a>
+        </td>
+        <td>
+            <a th:href="@{'/driver/remove/' + ${tempPr.idp}}" target="_self">Dzēst</a>
+        </td>
     </tr>
+
 </table>
+<a th:href="@{/driver/add}"  target="_self">Izveidot jaunu</a>
 </body>
 
 </html>

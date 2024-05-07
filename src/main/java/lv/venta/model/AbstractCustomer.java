@@ -21,6 +21,8 @@ public abstract class AbstractCustomer {
     @Id
     private long idc;
 
+
+
     @NotNull
     @Setter(value = AccessLevel.NONE)
     @Column(name = "Customer_code")
