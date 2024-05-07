@@ -113,11 +113,12 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
     @Override
     public ArrayList<Parcel> selectAllParcelsByCustomerId(long id) throws Exception {
         if(id <= 0) throw new Exception("Id should be positive");
-        if(customerAsPersonRepo.findById(id).orElse(null) == null ||customerAsCompanyRepo.findById(id).orElse(null) == null) throw new Exception("Customer with id (" + id + ") doesn't exist");
+        System.out.println(customerAsPersonRepo.findById(id).orElse(null) == null);
+        System.out.println(customerAsCompanyRepo.findById(id).orElse(null) == null);
+        if(customerAsPersonRepo.findById(id).orElse(null) == null && customerAsCompanyRepo.findById(id).orElse(null) == null)  throw new Exception("Customer with id (" + id + ") doesn't exist");
 
-        ArrayList<Parcel> result =  parcelRepo.findByAbstractCustomerIdc(id);
-        if(result.isEmpty()) throw new Exception("There are no parcels for this customer");
-
+        ArrayList<Parcel> result = parcelRepo.findByAbstractCustomerIdc(id);
+        if (result.isEmpty()) throw new Exception("There are no parcels for this customer");
         return result;
     }
 

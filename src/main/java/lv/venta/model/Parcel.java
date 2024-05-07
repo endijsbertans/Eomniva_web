@@ -23,7 +23,9 @@ public class Parcel {
     @NotNull
     @Column(name = "Is_fragile")
     boolean isFragile;
-
+    public  boolean getIsFragile(){
+        return isFragile;
+    }
     @NotNull
     @Column(name = "Order_created")
     LocalDateTime orderCreated;
