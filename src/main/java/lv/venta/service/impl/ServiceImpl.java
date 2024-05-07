@@ -66,7 +66,7 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
     }
 
     @Override
-    public ArrayList<Driver> selectAllDriver() {
+    public ArrayList<Driver> selectAllDrivers() {
         return (ArrayList<Driver>) driverRepo.findAll();
     }
 
@@ -115,7 +115,7 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
         if(id <= 0) throw new Exception("Id should be positive");
         if(customerAsPersonRepo.findById(id).orElse(null) == null ||customerAsCompanyRepo.findById(id).orElse(null) == null) throw new Exception("Customer with id (" + id + ") doesn't exist");
 
-        ArrayList<Parcel> result =  parcelRepo.findByIdc(id);
+        ArrayList<Parcel> result =  parcelRepo.findByAbstractCustomerIdc(id);
         if(result.isEmpty()) throw new Exception("There are no parcels for this customer");
 
         return result;
@@ -126,7 +126,7 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
         if(id <= 0) throw new Exception("Id should be positive");
         if(!driverRepo.existsById(id)) throw new Exception("Driver with id (" + id + ") doesn't exist");
 
-        ArrayList<Parcel> result =  parcelRepo.findByIdp(id);
+        ArrayList<Parcel> result =  parcelRepo.findByIdpa(id);
         if(result.isEmpty()) throw new Exception("There are no parcels for this driver");
 
         return result;
@@ -147,8 +147,8 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
     public ArrayList<Parcel> selectAllParcelsDeliveredToCity(City city) throws Exception {
         if(city == null) throw new Exception("City is null");
 
-        ArrayList<Parcel> result = parcelRepo.findByCity(city);
-
+        ArrayList<Parcel> result = customerAsCompanyRepo.findByAddressCity(city);
+        result.addAll(customerAsPersonRepo.findByAddressCity(city));
         if(result.isEmpty()) throw new Exception("There are no parcels for this city");
 
         return result;
@@ -192,7 +192,7 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
     @Override
     public double calculateIncomeOfParcelsByCustomerId(long id) {
         double totalIncome = 0.0;
-        ArrayList<Parcel> parcels = parcelRepo.findByIdc(id);
+        ArrayList<Parcel> parcels = parcelRepo.findByAbstractCustomerIdc(id);
         for (Parcel parcel : parcels) {
             totalIncome += parcel.getPrice();
         }

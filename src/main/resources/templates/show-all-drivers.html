@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<p th:text = "${mytitle}"></p>
+<table>
+    <tr th:each="tempPr: ${myobjs}">
+        <td th:text = "${tempPr.getName()}"></td>
+        <td th:text = "${tempPr.getSurname()}"></td>
+        <td th:text = "${tempPr.getPersonCode()}"></td>
+        <td th:text = "${tempPr.getLicenseNo()}"></td>
+        <td th:text = "${tempPr.getExperienceInYears()}"></td>
+
+    </tr>
+</table>
+</body>
+
+</html>

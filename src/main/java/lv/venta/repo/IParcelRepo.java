@@ -10,11 +10,10 @@ import java.util.ArrayList;
 
 @Repository
 public interface IParcelRepo extends CrudRepository<Parcel, Long>{
-    ArrayList<Parcel> findByIdc(long id);
-
-    ArrayList<Parcel> findByIdp(long id);
-
+    ArrayList<Parcel> findByAbstractCustomerIdc(long id);
     ArrayList<Parcel> findByPriceLessThan(double price);
 
-    ArrayList<Parcel> findByCity(City city);
+
+    ArrayList<Parcel> findByIdpa(long id);
+
 }

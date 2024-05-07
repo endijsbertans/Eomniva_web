@@ -43,7 +43,7 @@ public class Parcel {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name="Id_customer")
+    @JoinColumn(name="Idc")
     private AbstractCustomer abstractCustomer;
 
      @NotNull
