@@ -39,7 +39,5 @@ public class Address {
         setHouseNo(houseNo);
         setStreetOrHouseTitle(streetOrHouseTitle);
     }
-//    @OneToOne(mappedBy = "Address")//saite uz otras klases mainīgo
-//    @ToString.Exclude
-//    private Address address;
+
 }

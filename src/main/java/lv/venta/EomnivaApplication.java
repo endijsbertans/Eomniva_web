@@ -31,27 +31,41 @@ public class EomnivaApplication {
 
                 Person pers = new Person("Edijs","12345-12345", "Bertans");
                 personRepo.save(pers);
-               Driver d2 = new Driver(pers, 3, "AT12122");
-               System.out.println(d2);
-               driverRepo.save(d2);
+                Person pers2 = new Person("Endijs", "123456-12345", "Kalnins");
+                personRepo.save(pers2);
 
-               Person pers2 = new Person("Endijs", "123456-12345", "Kalnins");
-               personRepo.save(pers2);
+               Driver d1 = new Driver(pers, 3, "AT12122");
+               System.out.println(d1);
+               driverRepo.save(d1);
+                Driver d2 = new Driver(pers2, 12, "AT12332");
+                System.out.println(d2);
+                driverRepo.save(d2);
+
                Address addr1 = new Address(City.Ventspils, "Brivibas", 11);
                 addressRepo.save(addr1);
-               CustomerAsPerson cust3 = new CustomerAsPerson(pers2, addr1, "21792098");
-               System.out.println(cust3);
-               customerAsPersonRepo.save(cust3);
-
                 Address addr2 = new Address(City.Liepaja, "Talsu", 14);
                 addressRepo.save(addr2);
-                CustomerAsCompany cust4 = new CustomerAsCompany( addr2, "29666117", "SIA Labais", "LV1234124" );
+
+               CustomerAsPerson cust1 = new CustomerAsPerson(pers2, addr1, "21792098");
+               System.out.println(cust1);
+               customerAsPersonRepo.save(cust1);
+                CustomerAsPerson cust2 = new CustomerAsPerson(pers, addr2, "22892368");
+                System.out.println(cust2);
+                customerAsPersonRepo.save(cust2);
+
+                CustomerAsCompany cust3 = new CustomerAsCompany( addr1, "29666117", "SIA Labais", "LV1234124" );
+                customerAsCompanyRepo.save(cust3);
+                System.out.println(cust3);
+                CustomerAsCompany cust4 = new CustomerAsCompany( addr2, "29111227", "SIA Kruta", "LV4334434" );
                 customerAsCompanyRepo.save(cust4);
                 System.out.println(cust4);
 
-               // Parcel pckg2 = new Parcel(true, 11, Size.M, cust3);
-               // parcelRepo.save(pckg2);
-               // System.out.println(pckg2);
+                Parcel pckg1 = new Parcel(true, 11, Size.M, cust2, d2);
+                System.out.println(pckg1);
+                parcelRepo.save(pckg1);
+                Parcel pckg2 = new Parcel(false, 20, Size.XL, cust4, d2);
+                System.out.println(pckg2);
+                parcelRepo.save(pckg2);
 
             }
         };

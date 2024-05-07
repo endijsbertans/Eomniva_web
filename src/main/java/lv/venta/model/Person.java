@@ -34,16 +34,7 @@ public class Person {
     @Pattern(regexp = "\\d{5,6}-\\d{5}")
     private String personCode;
 
-//   @OneToOne(mappedBy = "person")//saite uz otras klases mainīgo
-//   @ToString.Exclude
-//   private Driver driver;
 
-//    public Person() {
-//        setName("Nav");
-//        setPersonCode("11111-11111");
-//        setSurname("Nav");
-//        setPhoneNo("20000000");
-//    }
 
     public Person(String name, String personCode, String surname){
         setName(name);

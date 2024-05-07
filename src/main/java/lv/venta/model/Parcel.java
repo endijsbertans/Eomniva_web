@@ -41,21 +41,23 @@ public class Parcel {
     @Column(name = "Size")
     private Size size;
 
-
+    @NotNull
     @ManyToOne
-    @JoinColumn(name="Idc")
+    @JoinColumn(name="Id_customer")
     private AbstractCustomer abstractCustomer;
-    // TODO give driver id
 
-     @OneToOne
+     @NotNull
+     @ManyToOne
      @JoinColumn(name="Idp_driver")
-    private Driver driver;
-    public Parcel(boolean isFragile, float price, Size size, AbstractCustomer customer){
+     private Driver driver;
+    public Parcel(boolean isFragile, float price, Size size, AbstractCustomer customer, Driver driver){
         setFragile(isFragile);
         setOrderCreated(LocalDateTime.now());
         setPlannedDelivery(LocalDateTime.now().plusDays(2));
         setPrice(price);
         setSize(size);
-        setAbstractCustomer(abstractCustomer);
+        setAbstractCustomer(customer);
+        setDriver(driver);
     }
+
 }
