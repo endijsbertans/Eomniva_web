@@ -28,6 +28,17 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
     @Autowired
     private IParcelRepo parcelRepo;
     @Override
+    public ArrayList<String> retrieveAllCustomerCode() {
+        ArrayList<String> result = new ArrayList<>();
+        for (CustomerAsPerson person : customerAsPersonRepo.findAll()) {
+            result.add(person.getCustomerCode());
+        }
+        for (CustomerAsCompany company : customerAsCompanyRepo.findAll()) {
+            result.add(company.getCustomerCode());
+        }
+        return result;
+    }
+    @Override
     public void insertNewCustomerAsPerson(CustomerAsPerson person) throws Exception {
         if(person == null) throw new Exception("Person is null");
         CustomerAsPerson customerFromDB = customerAsPersonRepo.findByPersonAndPhoneNo(person.getPerson(), person.getPhoneNo());

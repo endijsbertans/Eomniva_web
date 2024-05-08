@@ -71,11 +71,45 @@
     </tr>
 <!--action="#" th:action="@{'/parcel/add/' + ${customerCode} + '/' + ${driverId}}"-->
 </table>
-<form action="/parcel/add" method="GET">
-    <input type="text" name="customerCode" th:value="${customerCode} "placeholder="CustomerCode">
-    <input type="text" name="driverId" th:value="${driverId}"placeholder="DriverID">
-    <button type="submit">Search</button>
-</form>
+<!--<div>-->
+<!--    <h2>Insert Parcell for:</h2>-->
+<!--    <form action="/parcel/add" method="GET">-->
+<!--        <input type="text" name="customerCode" th:value="${customerCode} "placeholder="CustomerCode">-->
+<!--        <input type="text" name="driverId" th:value="${driverId}"placeholder="DriverID">-->
+<!--        <button type="submit">Search</button>-->
+<!--    </form>-->
+<!--</div>-->
+
+<table style="width: 40%; ">
+    <h2>Insert Parcell for custommer and driver</h2>
+    <tr>
+        <td>Insert CustommerCode:</td>
+        <td>Insert DriverId:</td>
+    </tr>
+    <tr>
+    <form th:action="@{'/parcel/add'}" method="get">
+        <td>
+        <select id="customerCode" name="customerCode">
+            <label>Select Customer:</label>
+            <option th:each="customer : ${customer}"
+                    th:value="${customer}"
+                    th:text="${customer}"></option>
+        </select>
+        </td>
+        <td>
+        <select id="driver1" name="driverId">
+            <option th:each="driver : ${driver}"
+                    th:value="${driver.getIdp()}"
+                    th:text="${driver.getIdp()}"></option>
+        </select>
+        </td>
+        <td>
+        <input type="submit" value="Insert Parcel">
+        </td>
+    </form>
+    </tr>
+</table>
+
 </body>
 
 </html>

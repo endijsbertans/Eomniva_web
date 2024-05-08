@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lv.venta.model.City;
 import lv.venta.model.Driver;
 import lv.venta.model.Parcel;
+import lv.venta.service.ICustomerService;
 import lv.venta.service.IDriverCRUDService;
 import org.springframework.ui.Model;
 import lv.venta.service.IParcelService;
@@ -21,11 +22,14 @@ public class ParcelController {
     private IParcelService parcelService;
     @Autowired
     private IDriverCRUDService driverCRUDService;
+    @Autowired
+    private ICustomerService customerService;
     @GetMapping("/show/all")
     public String showAllParcels(Model model){
         try {
             model.addAttribute("myobjs", parcelService.selectAllParcels());
             model.addAttribute("driver", driverCRUDService.selectAllDrivers());
+            model.addAttribute("customer", customerService.retrieveAllCustomerCode());
             model.addAttribute("title", "All parcels");
             return "show-all-parcels";
         } catch (Exception e) {
@@ -38,6 +42,8 @@ public class ParcelController {
     public String showAllParcelsByCustomerId(@RequestParam("id") long id, Model model){
         try {
             model.addAttribute("myobjs", parcelService.selectAllParcelsByCustomerId(id));
+            model.addAttribute("driver", driverCRUDService.selectAllDrivers());
+            model.addAttribute("customer", customerService.retrieveAllCustomerCode());
             model.addAttribute("title", "All parcels by customer");
             model.addAttribute("driver",driverCRUDService.selectAllDrivers());;
             return "show-all-parcels";
@@ -51,6 +57,8 @@ public class ParcelController {
     public String showAllParcelsByDriverId(@RequestParam("id") long id, Model model){
         try {
             model.addAttribute("myobjs", parcelService.selectAllParcelsDeliveredByDriverId(id));
+            model.addAttribute("driver", driverCRUDService.selectAllDrivers());
+            model.addAttribute("customer", customerService.retrieveAllCustomerCode());
             model.addAttribute("title", "All parcels by driver");
             return "show-all-parcels";
         } catch (Exception e) {
@@ -64,6 +72,8 @@ public class ParcelController {
         try {
 
             model.addAttribute("myobjs", parcelService.selectAllParcelsDeliveredToCity(City.valueOf(city)));
+            model.addAttribute("driver", driverCRUDService.selectAllDrivers());
+            model.addAttribute("customer", customerService.retrieveAllCustomerCode());
             model.addAttribute("title", "All parcels delivered to city");
             return "show-all-parcels";
         } catch (Exception e) {
@@ -76,6 +86,8 @@ public class ParcelController {
     public String showAllParcelsByPrice(@RequestParam("price") float price, Model model){
         try {
             model.addAttribute("myobjs", parcelService.selectAllParcelsPriceLessThan(price));
+            model.addAttribute("driver", driverCRUDService.selectAllDrivers());
+            model.addAttribute("customer", customerService.retrieveAllCustomerCode());
             model.addAttribute("title", "All parcels cheaper than " + price + "€");
             return "show-all-parcels";
         } catch (Exception e) {
@@ -103,7 +115,8 @@ public class ParcelController {
 
             try {
                 parcelService.insertNewParcelByCustomerCodeAndDriverId(parcel, customerCode, driverId);
-                return "redirect:/parcel/show/driver?id=" + driverId;
+                return "redirect:/parcel/show/all";
+                // return "redirect:/parcel/show/driver?id=" + driverId;
             } catch (Exception e) {
                 model.addAttribute("msg", e.getMessage());
                 model.addAttribute("title", "Error Page");
