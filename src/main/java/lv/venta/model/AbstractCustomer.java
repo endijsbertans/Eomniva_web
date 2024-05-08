@@ -35,14 +35,9 @@ public abstract class AbstractCustomer {
     )
     @ToString.Exclude
     private Collection<Parcel> parcels;
-    public void addParcel(Parcel parcel){
-        if(parcels == null){
-            parcels = new ArrayList<>();
-        }
-        parcels.add(parcel);
-    }
+
     @NotNull
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "Address")
     private Address address;
 

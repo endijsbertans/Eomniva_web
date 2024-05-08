@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public interface IParcelService {
     public abstract ArrayList<Parcel> selectAllParcelsByCustomerId(long id) throws Exception;
     public abstract ArrayList<Parcel> selectAllParcelsDeliveredByDriverId(long id) throws Exception;
-    public abstract ArrayList<Parcel> selectAllParcelsPriceLessThan(double price) throws Exception;
+    public abstract ArrayList<Parcel> selectAllParcelsPriceLessThan(float price) throws Exception;
     public ArrayList<Parcel> selectAllParcelsDeliveredToCity(City city) throws Exception;
     public Parcel insertNewParcelByCustomerCodeAndDriverId(Parcel parcel, String customerCode, long driverId) throws Exception;
     public abstract Parcel changeParcelDriverByParcelIdAndDriverId(long parcelId, long driverId) throws Exception;

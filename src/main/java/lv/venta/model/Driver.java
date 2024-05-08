@@ -6,7 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +17,11 @@ import java.util.Collection;
 @Entity
 public class Driver extends Person{
 
-    @OneToMany(mappedBy = "driver")
+    @OneToMany(
+            mappedBy = "driver",
+            cascade = CascadeType.ALL
+    )
+    @ToString.Exclude
     private Collection<Parcel> parcels;
 
     @PreRemove

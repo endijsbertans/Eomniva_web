@@ -127,14 +127,14 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
         if(id <= 0) throw new Exception("Id should be positive");
         if(!driverRepo.existsById(id)) throw new Exception("Driver with id (" + id + ") doesn't exist");
 
-        ArrayList<Parcel> result =  parcelRepo.findByIdpa(id);
+        ArrayList<Parcel> result =  parcelRepo.findByDriverIdp(id);
         if(result.isEmpty()) throw new Exception("There are no parcels for this driver");
 
         return result;
     }
 
     @Override
-    public ArrayList<Parcel> selectAllParcelsPriceLessThan(double price) throws Exception {
+    public ArrayList<Parcel> selectAllParcelsPriceLessThan(float price) throws Exception {
         if(price <= 0) throw new Exception("Price should be positive");
 
         ArrayList<Parcel> result = parcelRepo.findByPriceLessThan(price);
@@ -148,8 +148,9 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
     public ArrayList<Parcel> selectAllParcelsDeliveredToCity(City city) throws Exception {
         if(city == null) throw new Exception("City is null");
 
-        ArrayList<Parcel> result = customerAsCompanyRepo.findByAddressCity(city);
-        result.addAll(customerAsPersonRepo.findByAddressCity(city));
+        ArrayList<Parcel> result = (ArrayList<Parcel>) parcelRepo.findByAbstractCustomerAddressCity(city);
+
+        //result.addAll(customerAsPersonRepo.findByAddressCity(city));
         if(result.isEmpty()) throw new Exception("There are no parcels for this city");
 
         return result;
@@ -161,22 +162,26 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
         if(driverId <= 0) throw new Exception("Id should be positive");
 
         if(!driverRepo.existsById(driverId)) throw new Exception("Driver with id (" + driverId + ") doesn't exist");
-        if(     customerAsPersonRepo.findByCustomerCode(customerCode).orElse(null) == null ||
+        if(     customerAsPersonRepo.findByCustomerCode(customerCode).orElse(null) == null &&
                 customerAsCompanyRepo.findByCustomerCode(customerCode).orElse(null) == null)
             throw new Exception("Customer with id (" + customerCode + ") doesn't exist");
 
         CustomerAsPerson personCustomer = (CustomerAsPerson) customerAsPersonRepo.findByCustomerCode(customerCode).orElse(null);
         CustomerAsCompany companyCustomer = (CustomerAsCompany) customerAsCompanyRepo.findByCustomerCode(customerCode).orElse(null);
 
+        parcel.setOrderCreated(LocalDateTime.now());
+        parcel.setPlannedDelivery(LocalDateTime.now().plusDays(parcel.getDliveryTime()));
+        parcel.setDriver(selectDriverById(driverId));
+
         if (personCustomer != null) {
-            parcel.setDriver(driverRepo.findById(driverId).get());
-            personCustomer.addParcel(parcel);
+            parcel.setAbstractCustomer(personCustomer);
         } else if (companyCustomer != null) {
-            parcel.setDriver(driverRepo.findById(driverId).get());
-            personCustomer.addParcel(parcel);
+            parcel.setAbstractCustomer(companyCustomer);
         } else {
             throw new Exception("Customer not found");
         }
+        System.out.println(parcel);
+        parcelRepo.save(parcel);
         return parcel;
     }
 

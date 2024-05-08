@@ -28,11 +28,13 @@ public class Parcel {
     }
     @NotNull
     @Column(name = "Order_created")
-    LocalDateTime orderCreated;
+    private LocalDateTime orderCreated;
 
     @NotNull
     @Column(name = "Planned_delivery")
-    LocalDateTime plannedDelivery;
+    private LocalDateTime plannedDelivery;
+
+    private int dliveryTime = 2;
 
     @NotNull
     @Column(name = "Price")
@@ -49,7 +51,7 @@ public class Parcel {
     private AbstractCustomer abstractCustomer;
 
      @ManyToOne
-     @JoinColumn(name="Idp_driver")
+     @JoinColumn(name="Idp")
      private Driver driver;
 
     public Parcel(boolean isFragile, float price, Size size, AbstractCustomer customer, Driver driver){

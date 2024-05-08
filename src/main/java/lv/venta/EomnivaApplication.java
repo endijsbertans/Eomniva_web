@@ -49,11 +49,11 @@ public class EomnivaApplication {
                CustomerAsPerson cust1 = new CustomerAsPerson(pers2, addr1, "21792098");
                System.out.println(cust1);
                customerAsPersonRepo.save(cust1);
-                CustomerAsPerson cust2 = new CustomerAsPerson(pers, addr2, "22892368");
+                CustomerAsPerson cust2 = new CustomerAsPerson(pers, addr1, "22892368");
                 System.out.println(cust2);
                 customerAsPersonRepo.save(cust2);
 
-                CustomerAsCompany cust3 = new CustomerAsCompany( addr1, "29666117", "SIA Labais", "LV1234124" );
+                CustomerAsCompany cust3 = new CustomerAsCompany( addr2, "29666117", "SIA Labais", "LV1234124" );
                 customerAsCompanyRepo.save(cust3);
                 System.out.println(cust3);
                 CustomerAsCompany cust4 = new CustomerAsCompany( addr2, "29111227", "SIA Kruta", "LV4334434" );
@@ -63,10 +63,11 @@ public class EomnivaApplication {
                 Parcel pckg1 = new Parcel(true, 11, Size.M, cust2, d2);
                 System.out.println(pckg1);
                 parcelRepo.save(pckg1);
-                Parcel pckg2 = new Parcel(false, 20, Size.XL, cust4, d2);
+                System.out.println(d2);
+                Parcel pckg2 = new Parcel(false, 20, Size.XL, cust2, d2);
                 System.out.println(pckg2);
                 parcelRepo.save(pckg2);
-
+                System.out.println(d2);
             }
         };
     }
