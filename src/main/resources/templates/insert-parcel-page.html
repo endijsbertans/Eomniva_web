@@ -2,8 +2,10 @@
 
 <body>
 <nav>
-
+    <li><a th:href="@{/driver/show/all}">Show All Drivers!!!</a></li>
+    <li><a th:href="@{/parcel/show/all}">Show All Parcells</a></li>
 </nav>
+<h2 th:text = "${mytitle}"></h2>
 <h1>Lūdzu aizpildiet info par paciņu!!</h1>
 <form action="#" th:action="@{'/parcel/add/' + ${customerCode} + '/' + ${driverId}}" th:object="${parcel}" th:method="post">
     <table>

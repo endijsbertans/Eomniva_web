@@ -84,13 +84,13 @@ public class ParcelController {
             return "error-page";
         }
     }
-    @GetMapping("/add/{customerCode}/{driverId}")
-    public String addParcel(@PathVariable("customerCode") String customerCode, @PathVariable("driverId") long driverId, Model model){
+    @GetMapping("/add")
+    public String addParcel(@RequestParam("customerCode") String customerCode, @RequestParam("driverId") long driverId, Model model) {
         try {
             model.addAttribute("parcel", new Parcel());
             model.addAttribute("customerCode", customerCode);
             model.addAttribute("driverId", driverId);
-            model.addAttribute("title", "Parcel added");
+            model.addAttribute("title", "Add parcel");
             return "insert-parcel-page";
         } catch (Exception e) {
             model.addAttribute("msg", e.getMessage());

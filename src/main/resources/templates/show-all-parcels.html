@@ -3,13 +3,14 @@
 <head>
     <title>All Parcels</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+
 </head>
 
 <body>
 <nav>
     <ul>
-        <li><a th:href="@{/driver/show/all}">Show All Drivers!!</a></li>
-
+        <li><a th:href="@{/driver/show/all}">Show All Drivers!!!</a></li>
+        <li><a th:href="@{/parcel/show/all}">Show All Parcells</a></li>
         <form th:action="@{'/parcel/show/customer'}" method="GET">
             <input name="id" placeholder="Search by Customer id">
             <button type="submit">Search</button>
@@ -68,9 +69,13 @@
             </form>
         </td>
     </tr>
-
+<!--action="#" th:action="@{'/parcel/add/' + ${customerCode} + '/' + ${driverId}}"-->
 </table>
-
+<form action="/parcel/add" method="GET">
+    <input type="text" name="customerCode" th:value="${customerCode} "placeholder="CustomerCode">
+    <input type="text" name="driverId" th:value="${driverId}"placeholder="DriverID">
+    <button type="submit">Search</button>
+</form>
 </body>
 
 </html>
