@@ -1,9 +1,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
+<head>
+    <title>All Parcels</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+
 <body>
 <nav>
     <ul>
-        <li><a th:href="@{/driver/show/all}">Show All Drivers</a></li>
+        <li><a th:href="@{/driver/show/all}">Show All Drivers!!</a></li>
 
         <form th:action="@{'/parcel/show/customer'}" method="GET">
             <input name="id" placeholder="Search by Customer id">
@@ -20,16 +25,27 @@
         </form>
 
         <form action="/parcel/show/city" method="get">
-            <label for="city">Select City:</label>
-            <select id="city" name="city">
+            <label>Select City:</label>
+            <select id="idc" name="city">
                 <option th:each="city : ${T(lv.venta.model.City).values()}" th:value="${city}" th:text="${city}"></option>
             </select>
             <button type="submit">Show Parcels</button>
         </form>
     </ul>
 </nav>
-<h2 th:text = "${mytitle}"></h2>
+<h2 th:text = "${title}"></h2>
 <table>
+    <tr>
+        <td>IDPA</td>
+        <td>IDC</td>
+        <td>DRIVER_ID</td>
+        <td>ISFRAGILE</td>
+        <td>PRICE eur</td>
+        <td>SIZE</td>
+        <td>Created at</td>
+        <td>Planned Delivery</td>
+        <td>Assigned Driver</td>
+    </tr>
     <tr th:each="tempPr: ${myobjs}">
         <td th:text = "${tempPr.getIdpa()}"></td>
         <td th:text = "${tempPr.getAbstractCustomer().getIdc}"></td>
@@ -39,16 +55,22 @@
         <td th:text = "${tempPr.getSize()}"></td>
         <td th:text = "${tempPr.getOrderCreated()}"></td>
         <td th:text = "${tempPr.getPlannedDelivery}"></td>
-<!--        <td>-->
-<!--            <a th:href="@{'/driver/update/' + ${tempPr.idp}}" target="_self">Atjaunot</a>-->
-<!--        </td>-->
-<!--        <td>-->
-<!--            <a th:href="@{'/driver/remove/' + ${tempPr.idp}}" target="_self">Dzēst</a>-->
-<!--        </td>-->
+        <td>
+            <form th:action="@{'/parcel/change/' + ${tempPr.getIdpa()}}" method="get">
+                    <select id="driver" name="driverId">
+                        <option th:value="${tempPr.getDriver().getIdp()}"
+                                th:text="${tempPr.getDriver().getName()}+' (Esošais)'"></option>
+                        <option th:each="driver : ${driver}"
+                                th:value="${driver.getIdp()}"
+                                th:text="${driver.getName()}"></option>
+                    </select>
+                    <input type="submit" value="Change Driver">
+            </form>
+        </td>
     </tr>
 
 </table>
-<a th:href="@{/driver/add}"  target="_self">Izveidot jaunu</a>
+
 </body>
 
 </html>

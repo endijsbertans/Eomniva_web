@@ -4,18 +4,11 @@
 <nav>
     <ul>
         <li><a th:href="@{/driver/show/all}">Show All Drivers</a></li>
+        <li><a th:href="@{/parcel/show/all}">Show All Parcells</a></li>
 
-        <form th:action="@{'/parcel/show/customer'}" method="GET">
-            <input name="id" placeholder="Search by Customer id">
-            <button type="submit">Search</button>
-        </form>
-        <form th:action="@{'/parcel/show/price'}" method="GET">
-            <input type="number" name="price" min="0" max="100" step="0.2" value="0.01">
-            <button type="submit">Search</button>
-        </form>
     </ul>
 </nav>
-<h2 th:text = "${mytitle}"></h2>
+<h2 th:text = "${title}" style="color:red;"></h2>
 <p th:text = "${msg}"></p>
 
 </body>

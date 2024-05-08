@@ -18,6 +18,7 @@ import lv.venta.model.Parcel;
 import java.util.ArrayList;
 
 public interface IParcelService {
+    public abstract ArrayList<Parcel> selectAllParcels();
     public abstract ArrayList<Parcel> selectAllParcelsByCustomerId(long id) throws Exception;
     public abstract ArrayList<Parcel> selectAllParcelsDeliveredByDriverId(long id) throws Exception;
     public abstract ArrayList<Parcel> selectAllParcelsPriceLessThan(float price) throws Exception;

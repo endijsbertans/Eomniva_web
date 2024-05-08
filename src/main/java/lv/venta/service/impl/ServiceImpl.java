@@ -111,6 +111,10 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
     }
 
     @Override
+    public ArrayList<Parcel> selectAllParcels() {
+        return (ArrayList<Parcel>) parcelRepo.findAll();
+    }
+    @Override
     public ArrayList<Parcel> selectAllParcelsByCustomerId(long id) throws Exception {
         if(id <= 0) throw new Exception("Id should be positive");
         System.out.println(customerAsPersonRepo.findById(id).orElse(null) == null);
@@ -187,6 +191,7 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
 
     @Override
     public Parcel changeParcelDriverByParcelIdAndDriverId(long parcelId, long driverId) throws Exception {
+        System.out.println(parcelId + " " + driverId);
         Driver driver = selectDriverById(driverId);
         Parcel parcel = parcelRepo.findById(parcelId).orElse(null);
 

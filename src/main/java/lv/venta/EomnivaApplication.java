@@ -60,11 +60,11 @@ public class EomnivaApplication {
                 customerAsCompanyRepo.save(cust4);
                 System.out.println(cust4);
 
-                Parcel pckg1 = new Parcel(true, 11, Size.M, cust2, d2);
+                Parcel pckg1 = new Parcel(true, 11, Size.M, cust1, d2);
                 System.out.println(pckg1);
                 parcelRepo.save(pckg1);
                 System.out.println(d2);
-                Parcel pckg2 = new Parcel(false, 20, Size.XL, cust2, d2);
+                Parcel pckg2 = new Parcel(false, 20, Size.XL, cust3, d2);
                 System.out.println(pckg2);
                 parcelRepo.save(pckg2);
                 System.out.println(d2);
