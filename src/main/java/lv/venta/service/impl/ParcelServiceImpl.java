@@ -10,12 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-
 @Service
+public class ParcelServiceImpl implements IParcelService {
 
-public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParcelService {
     @Autowired
     private ICustomerAsPersonRepo customerAsPersonRepo;
     @Autowired
@@ -25,123 +22,7 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
     @Autowired
     private IParcelRepo parcelRepo;
     @Autowired
-    private IPersonRepo personRepo;
-    @Autowired
-    private IAddressRepo addressRepo;
-    @Override
-    public ArrayList<String> retrieveAllCustomerCode() {
-        ArrayList<String> result = new ArrayList<>();
-        for (CustomerAsPerson person : customerAsPersonRepo.findAll()) {
-            result.add(person.getCustomerCode());
-        }
-        for (CustomerAsCompany company : customerAsCompanyRepo.findAll()) {
-            result.add(company.getCustomerCode());
-        }
-        return result;
-    }
-    @Override
-    public ArrayList<Long> retrieveAllIdForCustomers() {
-        ArrayList<Long> result = new ArrayList<>();
-        for (CustomerAsPerson person : customerAsPersonRepo.findAll()) {
-            result.add(person.getIdc());
-        }
-        for (CustomerAsCompany company : customerAsCompanyRepo.findAll()) {
-            result.add(company.getIdc());
-        }
-        return result;
-    }
-    @Override
-    public void insertNewCustomerAsPerson(CustomerAsPerson customer) throws Exception {
-        if(customer == null) throw new Exception("Customer is null");
-        personRepo.save(customer.getPerson());
-        CustomerAsPerson customerFromDB = customerAsPersonRepo.findByPersonNameAndPersonSurnameAndPersonPersonCodeAndPhoneNo(customer.getPerson().getName(),customer.getPerson().getSurname(),customer.getPerson().getPersonCode(), customer.getPhoneNo());
-
-        if(customerFromDB != null) {
-            throw new Exception("Customer already exists");
-        } else {
-            CustomerAsPerson c = new CustomerAsPerson(customer.getPerson(), customer.getPhoneNo());
-            System.out.println(c);
-            customerAsPersonRepo.save(c);
-        }
-    }
-
-    @Override
-    public void insertNewCustomerAsCompany(CustomerAsCompany company) throws Exception {
-        if(company == null) throw new Exception("Company is null");
-        CustomerAsCompany customerFromDB = customerAsCompanyRepo.findByPhoneNoAndTitleAndCompanyRegNo(company.getPhoneNo(), company.getTitle(), company.getCompanyRegNo());
-        if(customerFromDB != null) {
-            throw new Exception("Customer already exists");
-        } else {
-            company.setCustomerCode();
-            customerAsCompanyRepo.save(company);
-        }
-    }
-
-    @Override
-    public void addAddressToCustomerByCustomerId(Address address, long customerId) throws Exception{
-        if(address == null || customerId < 0) throw new IllegalArgumentException("Address or customerId is invalid");
-        CustomerAsPerson personCustomer = customerAsPersonRepo.findById(customerId).orElse(null);
-        CustomerAsCompany companyCustomer = customerAsCompanyRepo.findById(customerId).orElse(null);
-        Address addressFromDb = addressRepo.findByCityAndHouseNoAndStreetHouseTitle(address.getCity(), address.getHouseNo(), address.getStreetHouseTitle());
-        if( addressFromDb == null)
-            addressRepo.save(address);
-        else
-            address = addressFromDb;
-
-        if (personCustomer != null) {
-            personCustomer.setAddress(address);
-            customerAsPersonRepo.save(personCustomer);
-        } else if (companyCustomer != null) {
-            companyCustomer.setAddress(address);
-            customerAsCompanyRepo.save(companyCustomer);
-        } else {
-            throw new Exception("Customer not found");
-        }
-    }
-
-    @Override
-    public ArrayList<Driver> selectAllDrivers() {
-        return (ArrayList<Driver>) driverRepo.findAll();
-    }
-
-    @Override
-    public Driver selectDriverById(long id) throws Exception {
-        if(id < 0) throw new Exception("Id should be positive");
-        if(driverRepo.existsById(id))
-        {
-            return driverRepo.findById(id).get();
-        }
-        throw new Exception("Driver with " + id + " is not found");
-    }
-
-    @Override
-    public Driver deleteDriverById(long id) throws Exception {
-        Driver deleteProduct = selectDriverById(id);
-        driverRepo.delete(deleteProduct);
-        return deleteProduct;
-    }
-
-    @Override
-    public Driver insertNewDriver(Driver driver) throws Exception {
-        if(driver == null) throw new Exception("Company is null");
-        Driver driverFromDB = driverRepo.findByNameAndSurnameAndPersonCodeAndExperienceInYearsAndLicenseNo(driver.getName(), driver.getSurname(), driver.getPersonCode(), driver.getExperienceInYears(), driver.getLicenseNo());
-        if(driverFromDB != null) {
-            throw new Exception("Customer already exists");
-        } else {
-            return driverRepo.save(driver);
-        }
-    }
-
-    @Override
-    public Driver updateDriverById(long id, Driver driver) throws Exception {
-        Driver updateDriver = selectDriverById(id);
-        updateDriver.setName(driver.getName());
-        updateDriver.setSurname(driver.getSurname());
-        updateDriver.setPersonCode(driver.getPersonCode());
-        updateDriver.setExperienceInYears(driver.getExperienceInYears());
-        updateDriver.setLicenseNo(driver.getLicenseNo());
-        return driverRepo.save(updateDriver);//notiek Update arī DB līmenī
-    }
+    private IDriverCRUDService driverCRUDService;
 
     @Override
     public ArrayList<Parcel> selectAllParcels() {
@@ -208,7 +89,7 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
 
         parcel.setOrderCreated(LocalDateTime.now());
         parcel.setPlannedDelivery(LocalDateTime.now().plusDays(parcel.getDliveryTime()));
-        parcel.setDriver(selectDriverById(driverId));
+        parcel.setDriver(driverCRUDService.selectDriverById(driverId));
         parcel.setPrice();
         if (personCustomer != null) {
             parcel.setAbstractCustomer(personCustomer);
@@ -225,7 +106,7 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
     @Override
     public Parcel changeParcelDriverByParcelIdAndDriverId(long parcelId, long driverId) throws Exception {
         System.out.println(parcelId + " " + driverId);
-        Driver driver = selectDriverById(driverId);
+        Driver driver = driverCRUDService.selectDriverById(driverId);
         Parcel parcel = parcelRepo.findById(parcelId).orElse(null);
 
         if(parcel == null && driver == null) throw new Exception("Parcel or driver not found");
@@ -255,4 +136,5 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
         }
         return count;
     }
+
 }

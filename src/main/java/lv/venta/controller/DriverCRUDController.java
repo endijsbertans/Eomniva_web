@@ -36,6 +36,7 @@ public class DriverCRUDController {
     public String getDriverById(@RequestParam("id") long id, Model model){
         try {
             model.addAttribute("title", "Driver by ID");
+            model.addAttribute("customerId", customerService.retrieveAllIdForCustomers());
             model.addAttribute("myobj", driverCRUDService.selectDriverById(id));
             return "show-single-driver.html";
         } catch (Exception e) {

@@ -27,15 +27,6 @@
             </form>
 
         </ul>
-        <form action="/parcel/calculate/income" method="get">
-            <label>Select Customer:</label>
-            <select name="customerId">
-                <option th:each="customerId : ${customerId}"
-                        th:value="${customerId}"
-                        th:text="${customerId}"></option>
-            </select>
-            <button type="submit">Calculate income by id</button>
-        </form>
     </nav>
     <h2 th:text = "${mytitle}"></h2>
     <table>
@@ -46,8 +37,6 @@
             <td>Personas kods</td>
             <td>Autovadītāja apliecības numurs</td>
             <td>Pieredze (gados)</td>
-            <td>Atjaunot</td>
-            <td style="background-color: palevioletred">Dzēst</td>
         </tr>
         <tr>
             <td th:text = "${myobj.getIdp()}"></td>

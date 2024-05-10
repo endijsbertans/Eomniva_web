@@ -122,8 +122,6 @@ public class ParcelController {
     public String addParcel(@RequestParam("customerCode") String customerCode, @RequestParam("driverId") long driverId, Model model) {
         try {
             model.addAttribute("parcel", new Parcel());
-            model.addAttribute("customerCode", customerCode);
-            model.addAttribute("driverId", driverId);
             model.addAttribute("title", "Add parcel");
             return "insert-parcel-page";
         } catch (Exception e) {
@@ -148,11 +146,7 @@ public class ParcelController {
     @GetMapping("/change/{parcelid}")
     public String changeParcelDriver(@PathVariable("parcelid") long parcelId, @RequestParam("driverId") long driverId, Model model){
         try {
-            model.addAttribute("title", "Change driver");
-            model.addAttribute("myobjs", parcelService.selectAllParcels());
-            model.addAttribute("driverId", driverId);
-            model.addAttribute("driver", driverCRUDService.selectAllDrivers());
-            model.addAttribute("parcel", parcelService.changeParcelDriverByParcelIdAndDriverId(parcelId, driverId));
+            parcelService.changeParcelDriverByParcelIdAndDriverId(parcelId, driverId);
             return "redirect:/parcel/show/all";
         } catch (Exception e) {
             model.addAttribute("msg", e.getMessage());
@@ -163,7 +157,7 @@ public class ParcelController {
     @GetMapping("/calculate/income")
     public String calculateIncome(@RequestParam("customerId") long customerId, Model model){
         try {
-            model.addAttribute("title", "Calculated income by customer Id: ");
+            model.addAttribute("title", "Calculated income by customer with id:" + customerId);
             model.addAttribute("customerId", customerId);
             model.addAttribute("msg", parcelService.calculateIncomeOfParcelsByCustomerId(customerId));
             return "msg-page";
