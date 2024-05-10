@@ -6,6 +6,9 @@ import lv.venta.service.IParcelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
+
+import java.time.LocalDateTime;
 
 @Controller
 public class MainController {
@@ -15,9 +18,17 @@ public class MainController {
     private ICustomerService customerService;
     @Autowired
     private IParcelService parcelService;
-    @GetMapping("/error") // localhost:8080/error
-    public String getError() {
-        System.out.println("Hello from Spring boot");
-        return "error-page";
+
+    @GetMapping("/") // localhost:8080/error
+    public String getPage(Model model) {
+        try {
+            model.addAttribute("title", "Hello to EOmniva Page! ");
+            model.addAttribute("msg", LocalDateTime.now().toString());
+            return "msg-page";
+        } catch (Exception e) {
+            model.addAttribute("msg", e.getMessage());
+            model.addAttribute("title", "Error Page");
+            return "error-page";
+        }
     }
 }

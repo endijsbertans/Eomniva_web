@@ -2,6 +2,7 @@ package lv.venta.controller;
 
 import jakarta.validation.Valid;
 import lv.venta.model.Driver;
+import lv.venta.service.ICustomerService;
 import org.springframework.ui.Model;
 import lv.venta.service.IDriverCRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,14 @@ import org.springframework.web.bind.annotation.*;
 public class DriverCRUDController {
     @Autowired
     private IDriverCRUDService driverCRUDService;
+    @Autowired
+    private ICustomerService customerService;
 
     @GetMapping("/show/all")
     public String showAllDrivers(Model model){
         try {
             model.addAttribute("myobjs", driverCRUDService.selectAllDrivers());
+            model.addAttribute("customerId", customerService.retrieveAllIdForCustomers());
             model.addAttribute("title", "All drivers");
             return "show-all-drivers";
         } catch (Exception e) {

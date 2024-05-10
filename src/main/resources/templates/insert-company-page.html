@@ -1,0 +1,50 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<h2 th:text = "${title}"></h2>
+    <nav>
+        <ul>
+            <li><a th:href="@{/driver/show/all}">Show All Drivers.</a></li>
+            <li><a th:href="@{/parcel/show/all}">Show All Parcells</a></li>
+            <li><a th:href="@{/parcel/calculate/count/today}">Parcels That Need To Be Delivered Today</a></li>
+        </ul>
+        <form action="/parcel/calculate/income" method="get">
+            <label>Select Customer:</label>
+            <select name="customerId">
+                <option th:each="customerId : ${customerId}"
+                        th:value="${customerId}"
+                        th:text="${customerId}"></option>
+            </select>
+            <button type="submit">Calculate income by id</button>
+        </form>
+    </nav>
+    <h2 th:text = "${title}"></h2>
+    <form action="#" th:action="@{/customer/create/company}" th:object="${customerAsCompany}" th:method="post">   <table>
+        <tr>
+            <td>Uzņēmuma nosaukums</td>
+            <td> <input type="text" th:field="*{title}"  />  </td>
+            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}"  ></td>
+        </tr>
+
+        <tr>
+            <td>Uzņēmuma reģistrācijas nummurs</td>
+            <td> <input type="text" th:field="*{companyRegNo}"  />  </td>
+            <td th:if="${#fields.hasErrors('companyRegNo')}" th:errors="*{companyRegNo}"  ></td>
+        </tr>
+
+        <tr>
+            <td>Telefona nr</td>
+            <td> <input type="text" th:field="*{phoneNo}"  />  </td>
+            <td th:if="${#fields.hasErrors('phoneNo')}" th:errors="*{phoneNo}"  ></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td> <input type="submit" title="Submit" />  </td>
+        </tr>
+    </table>
+
+    </form>
+
+</body>
+</html>

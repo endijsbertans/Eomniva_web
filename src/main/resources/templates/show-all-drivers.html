@@ -5,27 +5,49 @@
 </head>
 <body>
 <nav>
+    <h2 th:text = "${title}"></h2>
     <ul>
 
         <li><a th:href="@{/parcel/show/all}">Show All Parcells</a></li>
+        <li><a th:href="@{/customer/create/person}">Create Customer as Person</a></li>
+        <li><a th:href="@{/customer/create/company}">Create Customer as Company</a></li>
+        <form th:action="@{'/customer/add/address'}" method="get">
+            <td>
+                <select id="customerId" name="customerId">
+                    <label>Select Customer:</label>
+                    <option th:each="customerId : ${customerId}"
+                            th:value="${customerId}"
+                            th:text="${customerId}"></option>
+                </select>
+            </td>
+            <input type="submit" value="add address for this customer">
+        </form>
         <form th:action="@{'/driver/show'}" method="GET">
             <input name="id" placeholder="Search by id">
             <button type="submit">Search</button>
         </form>
-
     </ul>
+    <form action="/parcel/calculate/income" method="get">
+        <label>Select Customer:</label>
+        <select name="customerId">
+            <option th:each="customerId : ${customerId}"
+                    th:value="${customerId}"
+                    th:text="${customerId}"></option>
+        </select>
+        <button type="submit">Calculate income by id</button>
+    </form>
 </nav>
 <h2 th:text = "${mytitle}"></h2>
 <table>
     <tr>
         <td>IDP</td>
-        <td>Vārds</td>
-        <td>Uzvārds</td>
-        <td>Personas kods</td>
-        <td>Autovadītāja apliecības numurs</td>
-        <td>Pieredze (gados)</td>
-        <td>Atjaunot</td>
-        <td style="background-color: palevioletred">Dzēst</td>
+        <td>Name</td>
+        <td>Surname</td>
+        <td>Personal code</td>
+        <td>Drivers license number</td>
+        <td>Experience in years</td>
+        <td>Update</td>
+        <td style="background-color: palevioletred">Delete</td>
     </tr>
     <tr th:each="tempPr: ${myobjs}">
         <td th:text = "${tempPr.getIdp()}"></td>
@@ -35,15 +57,15 @@
         <td th:text = "${tempPr.getLicenseNo()}"></td>
         <td th:text = "${tempPr.getExperienceInYears()}"></td>
         <td>
-            <a th:href="@{'/driver/update/' + ${tempPr.idp}}" target="_self">Atjaunot</a>
+            <a th:href="@{'/driver/update/' + ${tempPr.idp}}" target="_self">Update</a>
         </td>
         <td style="background-color: palevioletred;">
-            <a  th:href="@{'/driver/remove/' + ${tempPr.idp}}" target="_self">Dzēst</a>
+            <a  th:href="@{'/driver/remove/' + ${tempPr.idp}}" target="_self">Delete</a>
         </td>
     </tr>
 
 </table>
-<a th:href="@{/driver/add}"  target="_self">Izveidot jaunu</a>
+<a style="" th:href="@{/driver/add}"  target="_self">Make New Driver</a>
 </body>
 
 </html>

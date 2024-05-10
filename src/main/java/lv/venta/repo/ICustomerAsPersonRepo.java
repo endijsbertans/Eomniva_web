@@ -9,9 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface ICustomerAsPersonRepo extends CrudRepository<CustomerAsPerson, Long>{
-    CustomerAsPerson findByPersonAndPhoneNo(Person person, String phoneNo);
-
     Optional<Object> findByCustomerCode(String customerCode);
-
-    Collection<? extends Parcel> findByAddressCity(City city);
+    CustomerAsPerson findByPersonNameAndPersonSurnameAndPersonPersonCodeAndPhoneNo(String name, String surname, String personCode, String phoneNo);
 }

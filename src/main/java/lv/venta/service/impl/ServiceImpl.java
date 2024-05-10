@@ -1,10 +1,7 @@
 package lv.venta.service.impl;
 
 import lv.venta.model.*;
-import lv.venta.repo.ICustomerAsCompanyRepo;
-import lv.venta.repo.ICustomerAsPersonRepo;
-import lv.venta.repo.IDriverRepo;
-import lv.venta.repo.IParcelRepo;
+import lv.venta.repo.*;
 import lv.venta.service.ICustomerService;
 import lv.venta.service.IDriverCRUDService;
 import lv.venta.service.IParcelService;
@@ -27,6 +24,10 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
     private IDriverRepo driverRepo;
     @Autowired
     private IParcelRepo parcelRepo;
+    @Autowired
+    private IPersonRepo personRepo;
+    @Autowired
+    private IAddressRepo addressRepo;
     @Override
     public ArrayList<String> retrieveAllCustomerCode() {
         ArrayList<String> result = new ArrayList<>();
@@ -39,13 +40,28 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
         return result;
     }
     @Override
-    public void insertNewCustomerAsPerson(CustomerAsPerson person) throws Exception {
-        if(person == null) throw new Exception("Person is null");
-        CustomerAsPerson customerFromDB = customerAsPersonRepo.findByPersonAndPhoneNo(person.getPerson(), person.getPhoneNo());
+    public ArrayList<Long> retrieveAllIdForCustomers() {
+        ArrayList<Long> result = new ArrayList<>();
+        for (CustomerAsPerson person : customerAsPersonRepo.findAll()) {
+            result.add(person.getIdc());
+        }
+        for (CustomerAsCompany company : customerAsCompanyRepo.findAll()) {
+            result.add(company.getIdc());
+        }
+        return result;
+    }
+    @Override
+    public void insertNewCustomerAsPerson(CustomerAsPerson customer) throws Exception {
+        if(customer == null) throw new Exception("Customer is null");
+        personRepo.save(customer.getPerson());
+        CustomerAsPerson customerFromDB = customerAsPersonRepo.findByPersonNameAndPersonSurnameAndPersonPersonCodeAndPhoneNo(customer.getPerson().getName(),customer.getPerson().getSurname(),customer.getPerson().getPersonCode(), customer.getPhoneNo());
+
         if(customerFromDB != null) {
             throw new Exception("Customer already exists");
         } else {
-            customerAsPersonRepo.save(person);
+            CustomerAsPerson c = new CustomerAsPerson(customer.getPerson(), customer.getPhoneNo());
+            System.out.println(c);
+            customerAsPersonRepo.save(c);
         }
     }
 
@@ -56,6 +72,7 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
         if(customerFromDB != null) {
             throw new Exception("Customer already exists");
         } else {
+            company.setCustomerCode();
             customerAsCompanyRepo.save(company);
         }
     }
@@ -63,14 +80,20 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
     @Override
     public void addAddressToCustomerByCustomerId(Address address, long customerId) throws Exception{
         if(address == null || customerId < 0) throw new IllegalArgumentException("Address or customerId is invalid");
-
         CustomerAsPerson personCustomer = customerAsPersonRepo.findById(customerId).orElse(null);
         CustomerAsCompany companyCustomer = customerAsCompanyRepo.findById(customerId).orElse(null);
+        Address addressFromDb = addressRepo.findByCityAndHouseNoAndStreetHouseTitle(address.getCity(), address.getHouseNo(), address.getStreetHouseTitle());
+        if( addressFromDb == null)
+            addressRepo.save(address);
+        else
+            address = addressFromDb;
 
         if (personCustomer != null) {
             personCustomer.setAddress(address);
+            customerAsPersonRepo.save(personCustomer);
         } else if (companyCustomer != null) {
             companyCustomer.setAddress(address);
+            customerAsCompanyRepo.save(companyCustomer);
         } else {
             throw new Exception("Customer not found");
         }
@@ -111,8 +134,7 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
 
     @Override
     public Driver updateDriverById(long id, Driver driver) throws Exception {
-         Driver updateDriver = selectDriverById(id);
-
+        Driver updateDriver = selectDriverById(id);
         updateDriver.setName(driver.getName());
         updateDriver.setSurname(driver.getSurname());
         updateDriver.setPersonCode(driver.getPersonCode());
@@ -187,7 +209,7 @@ public class ServiceImpl implements ICustomerService, IDriverCRUDService, IParce
         parcel.setOrderCreated(LocalDateTime.now());
         parcel.setPlannedDelivery(LocalDateTime.now().plusDays(parcel.getDliveryTime()));
         parcel.setDriver(selectDriverById(driverId));
-
+        parcel.setPrice();
         if (personCustomer != null) {
             parcel.setAbstractCustomer(personCustomer);
         } else if (companyCustomer != null) {

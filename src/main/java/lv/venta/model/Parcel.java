@@ -36,14 +36,16 @@ public class Parcel {
 
     private int dliveryTime = 2;
 
-    @NotNull
+    @Setter(value = AccessLevel.NONE)
     @Column(name = "Price")
     @Min(0)
     private float price;
+    public void setPrice() {
+        this.price = (float) ((size.getValue() * 1.99) + (isFragile ? 2.99 : 0));
+    }
 
-    @NotNull
     @Column(name = "Size")
-    private Size size;
+    private Size size = Size.notKnown;
 
 
     @ManyToOne
@@ -54,14 +56,14 @@ public class Parcel {
      @JoinColumn(name="Idp")
      private Driver driver;
 
-    public Parcel(boolean isFragile, float price, Size size, AbstractCustomer customer, Driver driver){
+    public Parcel(boolean isFragile, Size size, AbstractCustomer customer, Driver driver){
         setFragile(isFragile);
         setOrderCreated(LocalDateTime.now());
         setPlannedDelivery(LocalDateTime.now().plusDays(2));
-        setPrice(price);
         setSize(size);
         setAbstractCustomer(customer);
         setDriver(driver);
+        setPrice();
     }
 
 }

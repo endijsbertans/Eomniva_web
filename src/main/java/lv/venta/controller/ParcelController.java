@@ -27,10 +27,15 @@ public class ParcelController {
     @GetMapping("/show/all")
     public String showAllParcels(Model model){
         try {
+            // Kontroliera funkcionalitātes nepieciešamie
+            model.addAttribute("title", "All parcels");
             model.addAttribute("myobjs", parcelService.selectAllParcels());
+            // Nepieciešamie lapai
             model.addAttribute("driver", driverCRUDService.selectAllDrivers());
             model.addAttribute("customer", customerService.retrieveAllCustomerCode());
-            model.addAttribute("title", "All parcels");
+            model.addAttribute("customerId", customerService.retrieveAllIdForCustomers());
+            model.addAttribute("currCity", "Not selected");
+
             return "show-all-parcels";
         } catch (Exception e) {
             model.addAttribute("msg", e.getMessage());
@@ -41,11 +46,14 @@ public class ParcelController {
     @GetMapping("/show/customer")//one?id=2
     public String showAllParcelsByCustomerId(@RequestParam("id") long id, Model model){
         try {
+            // Kontroliera funkcionalitātes nepieciešamie
+            model.addAttribute("title", "All parcels by customer");
             model.addAttribute("myobjs", parcelService.selectAllParcelsByCustomerId(id));
+            // Nepieciešamie lapai
+            model.addAttribute("currCity", "Not selected");
+            model.addAttribute("customerId", customerService.retrieveAllIdForCustomers());
             model.addAttribute("driver", driverCRUDService.selectAllDrivers());
             model.addAttribute("customer", customerService.retrieveAllCustomerCode());
-            model.addAttribute("title", "All parcels by customer");
-            model.addAttribute("driver",driverCRUDService.selectAllDrivers());;
             return "show-all-parcels";
         } catch (Exception e) {
             model.addAttribute("msg", e.getMessage());
@@ -56,10 +64,15 @@ public class ParcelController {
     @GetMapping("/show/driver")
     public String showAllParcelsByDriverId(@RequestParam("id") long id, Model model){
         try {
+            // Kontroliera funkcionalitātes nepieciešamie
+            model.addAttribute("title", "All parcels by driver");
             model.addAttribute("myobjs", parcelService.selectAllParcelsDeliveredByDriverId(id));
+            // Nepieciešamie lapai
+            model.addAttribute("currCity", "Not selected");
+            model.addAttribute("customerId", customerService.retrieveAllIdForCustomers());
             model.addAttribute("driver", driverCRUDService.selectAllDrivers());
             model.addAttribute("customer", customerService.retrieveAllCustomerCode());
-            model.addAttribute("title", "All parcels by driver");
+
             return "show-all-parcels";
         } catch (Exception e) {
             model.addAttribute("msg", e.getMessage());
@@ -70,11 +83,15 @@ public class ParcelController {
     @GetMapping("/show/city")
     public String showAllParcelsDeliveredToCity(@RequestParam("city") String city, Model model){
         try {
-
-            model.addAttribute("myobjs", parcelService.selectAllParcelsDeliveredToCity(City.valueOf(city)));
-            model.addAttribute("driver", driverCRUDService.selectAllDrivers());
-            model.addAttribute("customer", customerService.retrieveAllCustomerCode());
+            // Kontroliera funkcionalitātes nepieciešamie
             model.addAttribute("title", "All parcels delivered to city");
+            model.addAttribute("myobjs", parcelService.selectAllParcelsDeliveredToCity(City.valueOf(city)));
+            model.addAttribute("currCity", City.valueOf(city));
+            // Nepieciešamie lapai
+            model.addAttribute("driver", driverCRUDService.selectAllDrivers());
+            model.addAttribute("customerId", customerService.retrieveAllIdForCustomers());
+            model.addAttribute("customer", customerService.retrieveAllCustomerCode());
+
             return "show-all-parcels";
         } catch (Exception e) {
             model.addAttribute("msg", e.getMessage());
@@ -85,10 +102,15 @@ public class ParcelController {
     @GetMapping("/show/price")
     public String showAllParcelsByPrice(@RequestParam("price") float price, Model model){
         try {
-            model.addAttribute("myobjs", parcelService.selectAllParcelsPriceLessThan(price));
-            model.addAttribute("driver", driverCRUDService.selectAllDrivers());
-            model.addAttribute("customer", customerService.retrieveAllCustomerCode());
+            // Kontroliera funkcionalitātes nepieciešamie
             model.addAttribute("title", "All parcels cheaper than " + price + "€");
+            model.addAttribute("myobjs", parcelService.selectAllParcelsPriceLessThan(price));
+            // Nepieciešamie lapai
+            model.addAttribute("driver", driverCRUDService.selectAllDrivers());
+            model.addAttribute("customerId", customerService.retrieveAllIdForCustomers());
+            model.addAttribute("customer", customerService.retrieveAllCustomerCode());
+            model.addAttribute("currCity", "Not selected");
+
             return "show-all-parcels";
         } catch (Exception e) {
             model.addAttribute("msg", e.getMessage());
@@ -116,7 +138,6 @@ public class ParcelController {
             try {
                 parcelService.insertNewParcelByCustomerCodeAndDriverId(parcel, customerCode, driverId);
                 return "redirect:/parcel/show/all";
-                // return "redirect:/parcel/show/driver?id=" + driverId;
             } catch (Exception e) {
                 model.addAttribute("msg", e.getMessage());
                 model.addAttribute("title", "Error Page");
@@ -133,6 +154,31 @@ public class ParcelController {
             model.addAttribute("driver", driverCRUDService.selectAllDrivers());
             model.addAttribute("parcel", parcelService.changeParcelDriverByParcelIdAndDriverId(parcelId, driverId));
             return "redirect:/parcel/show/all";
+        } catch (Exception e) {
+            model.addAttribute("msg", e.getMessage());
+            model.addAttribute("title", "Error Page");
+            return "error-page";
+        }
+    }
+    @GetMapping("/calculate/income")
+    public String calculateIncome(@RequestParam("customerId") long customerId, Model model){
+        try {
+            model.addAttribute("title", "Calculated income by customer Id: ");
+            model.addAttribute("customerId", customerId);
+            model.addAttribute("msg", parcelService.calculateIncomeOfParcelsByCustomerId(customerId));
+            return "msg-page";
+        } catch (Exception e) {
+            model.addAttribute("msg", e.getMessage());
+            model.addAttribute("title", "Error Page");
+            return "error-page";
+        }
+    }
+    @GetMapping("/calculate/count/today")
+    public String calculateCountToday(Model model){
+        try {
+            model.addAttribute("title", "Parcels That need to be delivered today: ");
+            model.addAttribute("msg", parcelService.calculateHowManyParcelsNeedToDeliverToday());
+            return "msg-page";
         } catch (Exception e) {
             model.addAttribute("msg", e.getMessage());
             model.addAttribute("title", "Error Page");

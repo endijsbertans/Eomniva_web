@@ -32,12 +32,12 @@ public class Address {
     @NotNull
     @Column(name = "Street_or_house_title")
     @Pattern(regexp = "[A-ZĒŪĪĻĶĢŠĀČŅ]{1}[a-zēūīļķģšāžčņ]+")
-    private String streetOrHouseTitle;
+    private String streetHouseTitle;
 
     public Address(City city, String streetOrHouseTitle, int houseNo){
         setCity(city);
         setHouseNo(houseNo);
-        setStreetOrHouseTitle(streetOrHouseTitle);
+        setStreetHouseTitle(streetOrHouseTitle);
     }
 
 }

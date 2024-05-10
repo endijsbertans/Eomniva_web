@@ -21,9 +21,6 @@ public abstract class AbstractCustomer {
     @Id
     private long idc;
 
-
-
-    @NotNull
     @Setter(value = AccessLevel.NONE)
     @Column(name = "Customer_code")
     protected String customerCode;
@@ -36,7 +33,6 @@ public abstract class AbstractCustomer {
     @ToString.Exclude
     private Collection<Parcel> parcels;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "Address")
     private Address address;
