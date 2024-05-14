@@ -121,6 +121,8 @@ public class ParcelController {
     @GetMapping("/add")
     public String addParcel(@RequestParam("customerCode") String customerCode, @RequestParam("driverId") long driverId, Model model) {
         try {
+            model.addAttribute("customerCode", customerCode);
+            model.addAttribute("driverId", driverId);
             model.addAttribute("parcel", new Parcel());
             model.addAttribute("title", "Add parcel");
             return "insert-parcel-page";

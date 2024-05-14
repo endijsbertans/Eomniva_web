@@ -50,6 +50,7 @@ public class DriverCRUDController {
         try {
             model.addAttribute("title", "Driver removed");
             model.addAttribute("myobj", driverCRUDService.deleteDriverById(id));
+            model.addAttribute("customerId", customerService.retrieveAllIdForCustomers());
             return "show-single-driver.html";
         } catch (Exception e) {
             model.addAttribute("msg", e.getMessage());
