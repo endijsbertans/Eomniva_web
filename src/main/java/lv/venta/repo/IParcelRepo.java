@@ -14,7 +14,5 @@ public interface IParcelRepo extends CrudRepository<Parcel, Long>{
     ArrayList<Parcel> findByAbstractCustomerIdc(long id);
     ArrayList<Parcel> findByPriceLessThan(double price);
     ArrayList<Parcel> findByDriverIdp(long id);
-
-
     ArrayList<Parcel> findByAbstractCustomerAddressCity(City city);
 }

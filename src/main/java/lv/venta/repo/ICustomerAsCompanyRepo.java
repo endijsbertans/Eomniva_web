@@ -13,8 +13,6 @@ import java.util.Optional;
 @Repository
 public interface ICustomerAsCompanyRepo extends CrudRepository<CustomerAsCompany, Long> {
     CustomerAsCompany findByPhoneNoAndTitleAndCompanyRegNo(String phoneNo, String title, String companyRegNo);
-
     Optional<Object> findByCustomerCode(String customerCode);
-
     ArrayList<Parcel> findByAddressCity(City city);
 }

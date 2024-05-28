@@ -7,7 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IAddressRepo extends CrudRepository<Address, Long>{
-
-
     Address findByCityAndHouseNoAndStreetHouseTitle(City city, int houseNo, String streetHouseTitle);
 }
