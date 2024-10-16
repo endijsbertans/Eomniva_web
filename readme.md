@@ -41,6 +41,3 @@ Controllers to interact with customers:
 - Get, Post - /customer/create/company 
 - Get, Post - /customer/add/address/{customerid}
 ```
-Now some examples of the system:
-![img_2.png](img_2.png)
-![img_3.png](img_3.png)
