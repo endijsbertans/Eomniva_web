@@ -1,41 +1,71 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <title th:text="${title}">Company Registration</title>
+</head>
 
 <body>
-<h2 th:text = "${title}"></h2>
-    <nav>
-        <ul>
-            <li><a th:href="@{/driver/show/all}">Show All Drivers.</a></li>
-            <li><a th:href="@{/parcel/show/all}">Show All Parcells</a></li>
-            <li><a th:href="@{/parcel/calculate/count/today}">Parcels That Need To Be Delivered Today</a></li>
+<div class="container mt-5">
+    <!-- Page Title -->
+    <h2 class="text-center mb-4" th:text="${title}">Company Registration</h2>
+
+    <!-- Navigation Menu -->
+    <nav class="mb-4">
+        <ul class="nav nav-pills justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/driver/show/all}">Show All Drivers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/parcel/show/all}">Show All Parcels</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/parcel/calculate/count/today}">Parcels to Deliver Today</a>
+            </li>
         </ul>
     </nav>
-    <h2 th:text = "${title}"></h2>
-    <form action="#" th:action="@{/customer/create/company}" th:object="${customerAsCompany}" th:method="post">   <table>
-        <tr>
-            <td>Uzņēmuma nosaukums</td>
-            <td> <input type="text" th:field="*{title}"  />  </td>
-            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}"  ></td>
-        </tr>
 
-        <tr>
-            <td>Uzņēmuma reģistrācijas nummurs</td>
-            <td> <input type="text" th:field="*{companyRegNo}"  />  </td>
-            <td th:if="${#fields.hasErrors('companyRegNo')}" th:errors="*{companyRegNo}"  ></td>
-        </tr>
+    <!-- Company Form -->
+    <div class="card shadow">
+        <div class="card-body">
+            <form th:action="@{/customer/create/company}" th:object="${customerAsCompany}" th:method="post">
+                <div class="mb-3 row">
+                    <label for="companyName" class="col-sm-3 col-form-label">Uzņēmuma nosaukums</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="companyName" th:field="*{title}" />
+                        <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                    </div>
+                </div>
 
-        <tr>
-            <td>Telefona nr</td>
-            <td> <input type="text" th:field="*{phoneNo}"  />  </td>
-            <td th:if="${#fields.hasErrors('phoneNo')}" th:errors="*{phoneNo}"  ></td>
-        </tr>
+                <div class="mb-3 row">
+                    <label for="companyRegNo" class="col-sm-3 col-form-label">Uzņēmuma reģistrācijas nummurs</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="companyRegNo" th:field="*{companyRegNo}" />
+                        <div class="text-danger" th:if="${#fields.hasErrors('companyRegNo')}" th:errors="*{companyRegNo}"></div>
+                    </div>
+                </div>
 
-        <tr>
-            <td></td>
-            <td> <input type="submit" title="Submit" />  </td>
-        </tr>
-    </table>
+                <div class="mb-3 row">
+                    <label for="phoneNo" class="col-sm-3 col-form-label">Telefona nr</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="phoneNo" th:field="*{phoneNo}" />
+                        <div class="text-danger" th:if="${#fields.hasErrors('phoneNo')}" th:errors="*{phoneNo}"></div>
+                    </div>
+                </div>
 
-    </form>
+                <div class="row">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
+<!-- Add Bootstrap JS and its dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-mQ93ah3Lr5A+46IWx65Z5zz4jIAaa6cAQI10eG2/81v7VhBO1Pskzr7ixmE5YMDq" crossorigin="anonymous"></script>
 </body>
 </html>
