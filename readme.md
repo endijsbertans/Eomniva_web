@@ -3,8 +3,7 @@ SpringBoot + H2 + JPA + Thymyleaf
 The main idea of the information system is to store different types of customers or users—either companies or individual buyers. Each customer can register their address and request packages to be sent to that address. Each package is associated with a courier, who will deliver the package to the address linked to the customer.
 
 DataBase Structure:
-![db_structure.png](..%2F..%2Fdb_structure.png)
-
+![img_5.png](img_5.png)
 Controllers:
 
 Controllers to interact with drivers:
