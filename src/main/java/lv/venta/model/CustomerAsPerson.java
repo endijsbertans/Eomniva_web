@@ -14,7 +14,6 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 @ToString
-
 @Entity
 public class CustomerAsPerson extends AbstractCustomer{
 // IDC, Custoemr code, Phone no, address, person code, idp

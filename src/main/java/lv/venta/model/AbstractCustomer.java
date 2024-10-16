@@ -34,7 +34,7 @@ public abstract class AbstractCustomer {
     private Collection<Parcel> parcels;
 
     @ManyToOne
-    @JoinColumn(name = "Address")
+    @JoinColumn(name = "Ida")
     private Address address;
 
     @NotNull
